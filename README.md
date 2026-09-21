@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-12 tests passed locally on Python 3.13. Other Python versions have not yet been exercised.
+15 tests passed locally on Python 3.13. Other Python versions have not yet been exercised.
 
 ## Architecture
 
@@ -54,3 +54,9 @@ Provide invented examples of facts that change or conflict in a workflow you und
 ## License
 
 Copyright (c) 2026 Ppetip. Original code is licensed under GNU GPL version 3 only; see [LICENSE](LICENSE).
+
+## Latest development pass
+
+Temporal source-wide revocation with historical query preservation.
+
+Use JSON operation `revoke_source` with `source`, `recorded_at`, and `reason`. Later claims from that source are rejected. Audit history is retained.

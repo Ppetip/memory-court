@@ -1,12 +1,11 @@
 # Status
 
-Stage: v0.1 offline command-line prototype.
+Stage: offline command-line prototype.
+Verified: 15 tests and default demo pass.
 
-Verified: 12 tests pass; default synthetic demo runs.
+Latest: Temporal source-wide revocation with historical query preservation.
 
-Current: Persists structured claims and retractions in SQLite, detects conflicting active values, expires old claims and answers time-specific queries with evidence. Database triggers prevent ordinary updates/deletes of audit events.
+Next: Event pagination and last-write-wins comparison.
 
-Next: Add source-wide retraction, pagination and a last-write-wins comparison on adversarial temporal sequences.
-
-Repository target: https://github.com/Ppetip/memory-court
-Budget: local/free; no paid APIs or model downloads used.
+Repository: https://github.com/Ppetip/memory-court
+Budget: local/free. No paid inference or model downloads.
