@@ -1,7 +1,7 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 27 offline tests pass; dry run and live synthetic Jev workflow pass.
+Verified: 31 offline tests pass; dry run and live synthetic Jev workflow pass.
 
 Latest: Jev flags a synthetic conflict without overriding the temporal court or writing claims.
 
@@ -16,3 +16,5 @@ Live smoke responses are not production benchmarks. No model training performed.
 2026-09-21 CI pass: added pinned, read-only Windows/Linux Python 3.11/3.13 checks for unit tests and offline CLI contracts. Local checks and all four hosted Windows/Linux Python 3.11/3.13 jobs pass. No additional Jev calls.
 
 Hosted verification: https://github.com/Ppetip/memory-court/actions/runs/35590283432
+
+2026-09-21 14:42 UTC budget fix: live clients require an existing ledger; explicit initialization refuses overwrite. Added four regression cases for missing/deleted/empty ledgers and preserved spending. All local tests and CLI checks pass; hosted results pending. No additional Jev calls.
