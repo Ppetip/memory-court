@@ -110,3 +110,5 @@ Live clients now open existing ledgers only, including at reservation time. A mi
 ## Latest reliability improvement
 
 Use `court.events_page(after_sequence=0, limit=100)` to read up to 1,000 events and receive `next_cursor`. Continue with that cursor; empty pages retain it. Events appended later can appear on subsequent pages, so pagination is not a frozen snapshot. Existing full-history retrieval is unchanged.
+
+See [Reading results](docs/RESULTS.md) for outcome fields, denominators, abstentions and the limits of command success.
