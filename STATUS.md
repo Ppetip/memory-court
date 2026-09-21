@@ -1,11 +1,11 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 31 offline tests pass; dry run and live synthetic Jev workflow pass.
+Verified: 34 offline tests pass; dry run and live synthetic Jev workflow pass.
 
-Latest: Jev flags a synthetic conflict without overriding the temporal court or writing claims.
+Latest: Event history supports bounded keyset pagination with stable sequence cursors.
 
-Next: Evaluate paraphrases and changing validity intervals; compare against last-write-wins.
+Next: Compare temporal retrieval against last-write-wins on labeled sequences.
 
 Repository: https://github.com/Ppetip/memory-court
 Budget: one shared $3 cumulative Jev allowance across the portfolio, never per project or cycle.
@@ -20,3 +20,5 @@ Hosted verification: https://github.com/Ppetip/memory-court/actions/runs/3559028
 2026-09-21 14:42 UTC budget fix: live clients require an existing ledger; explicit initialization refuses overwrite. Added four regression cases for missing/deleted/empty ledgers and preserved spending. All local tests, CLI checks, and four hosted Windows/Linux Python 3.11/3.13 jobs pass. No additional Jev calls.
 
 Budget-fix hosted verification: https://github.com/Ppetip/memory-court/actions/runs/35614390873
+
+2026-09-21 18:44 UTC: Event history supports bounded keyset pagination with stable sequence cursors. Local tests and offline CLI checks pass; updated hosted matrix pending. No additional Jev calls.

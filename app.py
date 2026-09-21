@@ -31,6 +31,14 @@ class Court:
         return [{"sequence": seq, "kind": kind, "recorded_at": at, "payload": json.loads(p)}
                 for seq, kind, at, p in self.db.execute("SELECT seq,kind,recorded_at,payload FROM events ORDER BY seq")]
 
+    def events_page(self, after_sequence=0, limit=100):
+        """Keyset pagination; returned cursor resumes strictly after the last row."""
+        if type(after_sequence) is not int or after_sequence < 0 or type(limit) is not int or not 1 <= limit <= 1000:
+            raise ValueError("nonnegative cursor and limit between 1 and 1000 required")
+        rows = list(self.db.execute("SELECT seq,kind,recorded_at,payload FROM events WHERE seq > ? ORDER BY seq LIMIT ?", (after_sequence, limit)))
+        events = [{"sequence": seq, "kind": kind, "recorded_at": at, "payload": json.loads(p)} for seq, kind, at, p in rows]
+        return {"events": events, "next_cursor": events[-1]["sequence"] if events else after_sequence}
+
     def _append(self, kind, recorded_at, payload):
         at = stamp(recorded_at)
         # Serialize validation and insertion across writers to the same database.
