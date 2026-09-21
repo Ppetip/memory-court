@@ -2,7 +2,7 @@
 
 Agent memory that can explain, dispute, expire and retract what it believes.
 
-**v0.1 development prototype Ã‚Â· Python 3.11+ Ã‚Â· GPL-3.0-only**
+**v0.1 development prototype Ãƒâ€šÃ‚Â· Python 3.11+ Ãƒâ€šÃ‚Â· GPL-3.0-only**
 
 ## What works
 
@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-31 tests pass locally on Python 3.13; the updated hosted matrix is pending. Previous versions passed Windows/Linux Python 3.11/3.13.
+31 tests pass on Windows and Linux with Python 3.11 and 3.13 (GitHub Actions).
 
 ## Architecture
 
