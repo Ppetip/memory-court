@@ -21,4 +21,6 @@ Hosted verification: https://github.com/Ppetip/memory-court/actions/runs/3559028
 
 Budget-fix hosted verification: https://github.com/Ppetip/memory-court/actions/runs/35614390873
 
-2026-09-21 18:44 UTC: Event history supports bounded keyset pagination with stable sequence cursors. Local tests and offline CLI checks pass; updated hosted matrix pending. No additional Jev calls.
+2026-09-21 18:44 UTC: Event history supports bounded keyset pagination with stable sequence cursors. Local tests, offline CLI checks, and all four hosted matrix jobs pass. No additional Jev calls.
+
+Feature-pass verification: https://github.com/Ppetip/memory-court/actions/runs/35640902098
