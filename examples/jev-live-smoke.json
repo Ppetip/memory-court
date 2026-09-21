@@ -1,0 +1,41 @@
+{
+  "mode": "live-model-on-synthetic-data",
+  "model": "jev-1.13.0",
+  "semantic_review": "conflict",
+  "structured_conflict": {
+    "entity": "fictional-customer",
+    "attribute": "shipping_city",
+    "as_of": "2026-01-02T12:00:00.000000+00:00",
+    "status": "conflict",
+    "answer": null,
+    "evidence": [
+      {
+        "attribute": "shipping_city",
+        "entity": "fictional-customer",
+        "id": "old",
+        "source": "synthetic-form-old",
+        "valid_from": "2026-01-01T00:00:00.000000+00:00",
+        "valid_until": null,
+        "value": "Boston"
+      },
+      {
+        "attribute": "shipping_city",
+        "entity": "fictional-customer",
+        "id": "new",
+        "source": "synthetic-form-new",
+        "valid_from": "2026-01-02T00:00:00.000000+00:00",
+        "valid_until": null,
+        "value": "Portland"
+      }
+    ]
+  },
+  "mutates_memory": false,
+  "usage": [
+    {
+      "input_tokens": 421,
+      "output_tokens": 42
+    }
+  ],
+  "limitation": "Advisory synthetic review; the structured court remains authoritative. No source revocation, claim resolution or production-memory upload.",
+  "recorded_at_utc": "2026-09-21"
+}

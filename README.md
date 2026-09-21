@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-15 tests passed locally on Python 3.13. Other Python versions have not yet been exercised.
+27 tests passed locally on Python 3.13. Other Python versions have not yet been exercised.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ See [the captured output](examples/demo-output.json). Rerun `python app.py` to r
 
 ## Limits
 
-Structured string claims only; no natural-language extraction, embeddings or semantic conflict detection. Evidence does not establish truth. Retractions preserve audit history and are not physical deletion. SQLite administrators can change schema: triggers are an application invariant, not tamper-proof storage. Operations in a file are committed individually, not as one batch.
+The core court stores structured string claims; no natural-language extraction or embeddings. Optional Jev semantic review is advisory and cannot resolve claims. Evidence does not establish truth. Retractions preserve audit history and are not physical deletion. SQLite administrators can change schema: triggers are an application invariant, not tamper-proof storage. Operations in a file are committed individually, not as one batch.
 
 ## Next experiment
 
@@ -60,3 +60,39 @@ Copyright (c) 2026 Ppetip. Original code is licensed under GNU GPL version 3 onl
 Temporal source-wide revocation with historical query preservation.
 
 Use JSON operation `revoke_source` with `source`, `recorded_at`, and `reason`. Later claims from that source are rejected. Audit history is retained.
+
+## Optional Jev workflow
+
+Run `python jev_workflow.py` to preview the synthetic request without network access.
+To opt into live calls, create a local `.env` using `.env.example`, set your TypeSafe key,
+and point `JEV_BUDGET_DB` at one absolute SQLite path shared by all five projects.
+Then run `python jev_workflow.py --live --env-file /absolute/path/to/.env`.
+Do not commit the real configuration. No packages or model downloads are required.
+
+The adapter pins `jev-1.13.0` and sends only the built-in synthetic fixture in this CLI.
+Agent Black Box makes four replay calls; each other workflow makes one. The reusable
+`Client.evaluate(state, questions)` interface supports bounded Choice questions.
+Treat low-confidence decisions as abstentions; its 0.8 cutoff is a heuristic, not calibrated certainty.
+
+The shared ledger allows at most $3 in cumulative reservations: one cent is permanently
+reserved **before each attempt**, including timeouts and failed requests. It never retries
+automatically. Concurrent processes share an atomic SQLite reservation. Never reset,
+delete, replace or split the ledger to regain budget. This guard covers this client,
+not unrelated account use. Provider billing remains authoritative.
+
+[Official TypeSafe pricing](https://docs.typesafe.ai/models) checked 2026-09-21 lists
+$0.042 per million input tokens and free output. One cent exceeds a full 65,536-input-token
+request at that rate; the client also limits serialized input to 16KB. Estimates use
+reported input tokens and exclude unknown failed-request usage. Calls fail closed on
+2026-09-28 until pricing and the reservation bound are reviewed. Never extend the review
+date without checking the provider's current terms.
+
+[The HTTP API](https://docs.typesafe.ai/api) uses the fixed official TypeSafe endpoint.
+Redirects are refused, responses are schema-checked, and error bodies/credentials are
+not logged. Tests mock the provider and do not spend money.
+
+`examples/jev-live-smoke.json` records a real 2026-09-21 model response on synthetic input.
+It is a connectivity and workflow smoke check, not a quality benchmark or evidence of
+training, generalization, speed or production reliability. Re-running it may change results.
+
+Jev flags a synthetic conflict without overriding the temporal court or writing claims.
