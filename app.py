@@ -80,13 +80,14 @@ class Court:
             raise ValueError("nonempty source and reason required")
         self._append("revoke_source", recorded_at, {"source": source, "reason": reason})
 
-    def query(self, entity, attribute, as_of, explain=False):
+    def query(self, entity, attribute, as_of, explain=False, known_at=None):
         if type(explain) is not bool:
             raise ValueError("explain must be boolean")
         at = stamp(as_of)
+        knowledge = stamp(known_at) if known_at is not None else at
         claims, retracted, revoked_sources = {}, set(), set()
         for event in self.events():
-            if event["recorded_at"] > at:
+            if event["recorded_at"] > knowledge:
                 continue
             p = event["payload"]
             if event["kind"] == "claim":
@@ -102,6 +103,8 @@ class Court:
         result = {"entity": entity, "attribute": attribute, "as_of": at,
                 "status": "unknown" if not values else "supported" if len(values) == 1 else "conflict",
                 "answer": values[0] if len(values) == 1 else None, "evidence": active}
+        if known_at is not None:
+            result["known_at"] = knowledge
         if explain:
             excluded = []
             for id, p in claims.items():

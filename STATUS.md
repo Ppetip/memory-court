@@ -1,9 +1,9 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 37 offline tests pass; dry run and live synthetic Jev workflow pass.
+Verified: 41 offline tests pass; dry run and live synthetic Jev workflow pass.
 
-Latest: Optional query explanations identify retracted, revoked, expired and not-yet-valid claims.
+Latest: Query operations now accept optional `known_at`.
 
 Next: Compare temporal retrieval against a last-write-wins baseline.
 
@@ -30,3 +30,5 @@ Feature-pass verification: https://github.com/Ppetip/memory-court/actions/runs/3
 2026-09-22 02:46 UTC: Optional query explanations identify retracted, revoked, expired and not-yet-valid claims. Common-runner checks, new route and all four hosted jobs pass. No new Jev calls.
 
 Evaluation-path verification: https://github.com/Ppetip/memory-court/actions/runs/35681202238
+
+2026-09-22 10:48 UTC: Query operations now accept optional `known_at`. `as_of` selects the effective validity time; `known_at` selects which recorded claims, retractions and source revocations are known. Omit it to preserve the original behavior where both times equal `as_of`. Later knowledge can correct an earlier view without rewriting its original answer. A known future-effective claim can also be queried, but that is a view of stored assertions, not a prediction. Run `python app.py --input examples/knowledge-time.json` for a synthetic late-arriving claim: original view unknown, hindsight view Boston, corrected hindsight unknown after retraction. Local tests pass; publication and hosted verification pending. No new Jev calls.
