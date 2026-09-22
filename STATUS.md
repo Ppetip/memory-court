@@ -35,4 +35,6 @@ Evaluation-path verification: https://github.com/Ppetip/memory-court/actions/run
 
 Reliability verification: https://github.com/Ppetip/memory-court/actions/runs/35718650769
 
-2026-09-22 22:50 UTC: Run `python comparison.py` (Codex route `comparison`). Four authored query expectations cover a supported fact, conflict, retraction and expiry. Temporal Court matches 4/4; the latest-recorded-value baseline matches 1/4. The baseline respects the knowledge cutoff but deliberately ignores validity, retractions and source revocation. This small specification example is chosen to show those differences and is not a representative accuracy estimate. See `examples/extended-evaluation.json`. Common-runner checks pass. Publication and hosted verification pending. No new Jev calls.
+2026-09-22 22:50 UTC: Run `python comparison.py` (Codex route `comparison`). Four authored query expectations cover a supported fact, conflict, retraction and expiry. Temporal Court matches 4/4; the latest-recorded-value baseline matches 1/4. The baseline respects the knowledge cutoff but deliberately ignores validity, retractions and source revocation. This small specification example is chosen to show those differences and is not a representative accuracy estimate. See `examples/extended-evaluation.json`. Common-runner checks pass. Published and verified: all four hosted Windows/Linux Python 3.11/3.13 jobs pass. No new Jev calls.
+
+Extended evaluation verification: https://github.com/Ppetip/memory-court/actions/runs/35795070942
