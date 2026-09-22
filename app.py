@@ -80,7 +80,9 @@ class Court:
             raise ValueError("nonempty source and reason required")
         self._append("revoke_source", recorded_at, {"source": source, "reason": reason})
 
-    def query(self, entity, attribute, as_of):
+    def query(self, entity, attribute, as_of, explain=False):
+        if type(explain) is not bool:
+            raise ValueError("explain must be boolean")
         at = stamp(as_of)
         claims, retracted, revoked_sources = {}, set(), set()
         for event in self.events():
@@ -97,9 +99,22 @@ class Court:
                   and p["attribute"] == attribute and p["valid_from"] <= at
                   and (p["valid_until"] is None or at < p["valid_until"])]
         values = sorted({p["value"] for p in active})
-        return {"entity": entity, "attribute": attribute, "as_of": at,
+        result = {"entity": entity, "attribute": attribute, "as_of": at,
                 "status": "unknown" if not values else "supported" if len(values) == 1 else "conflict",
                 "answer": values[0] if len(values) == 1 else None, "evidence": active}
+        if explain:
+            excluded = []
+            for id, p in claims.items():
+                if p["entity"] != entity or p["attribute"] != attribute:
+                    continue
+                reasons = []
+                if id in retracted: reasons.append("retracted")
+                if p["source"] in revoked_sources: reasons.append("source_revoked")
+                if p["valid_from"] > at: reasons.append("not_yet_valid")
+                if p["valid_until"] is not None and at >= p["valid_until"]: reasons.append("expired")
+                if reasons: excluded.append({"id":id,"reasons":reasons})
+            result["excluded"] = excluded
+        return result
 
 
 def run(operations, path=":memory:"):

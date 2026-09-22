@@ -1,11 +1,11 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 34 offline tests pass; dry run and live synthetic Jev workflow pass.
+Verified: 37 offline tests pass; dry run and live synthetic Jev workflow pass.
 
-Latest: Event history supports bounded keyset pagination with stable sequence cursors.
+Latest: Optional query explanations identify retracted, revoked, expired and not-yet-valid claims.
 
-Next: Compare temporal retrieval against last-write-wins on labeled sequences.
+Next: Compare temporal retrieval against a last-write-wins baseline.
 
 Repository: https://github.com/Ppetip/memory-court
 Budget: one shared $3 cumulative Jev allowance across the portfolio, never per project or cycle.
@@ -26,3 +26,5 @@ Budget-fix hosted verification: https://github.com/Ppetip/memory-court/actions/r
 Feature-pass verification: https://github.com/Ppetip/memory-court/actions/runs/35640902098
 
 2026-09-21 22:45 UTC: documented how to interpret this tool's outcomes separately from command success. The local Codex runner now shows a concise outcome summary for this project. Verified through common-runner checks and synthetic demo output; histories stay local.
+
+2026-09-22 02:46 UTC: Optional query explanations identify retracted, revoked, expired and not-yet-valid claims. Common-runner checks and new route pass locally; hosted verification pending. No new Jev calls.

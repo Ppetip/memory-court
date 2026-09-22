@@ -1,0 +1,117 @@
+{
+  "queries": [
+    {
+      "entity": "fictional-customer",
+      "attribute": "shipping_city",
+      "as_of": "2026-01-01T12:00:00.000000+00:00",
+      "status": "supported",
+      "answer": "Boston",
+      "evidence": [
+        {
+          "attribute": "shipping_city",
+          "entity": "fictional-customer",
+          "id": "old",
+          "source": "synthetic-form-old",
+          "valid_from": "2026-01-01T00:00:00.000000+00:00",
+          "valid_until": null,
+          "value": "Boston"
+        }
+      ],
+      "excluded": []
+    },
+    {
+      "entity": "fictional-customer",
+      "attribute": "shipping_city",
+      "as_of": "2026-01-02T12:00:00.000000+00:00",
+      "status": "conflict",
+      "answer": null,
+      "evidence": [
+        {
+          "attribute": "shipping_city",
+          "entity": "fictional-customer",
+          "id": "old",
+          "source": "synthetic-form-old",
+          "valid_from": "2026-01-01T00:00:00.000000+00:00",
+          "valid_until": null,
+          "value": "Boston"
+        },
+        {
+          "attribute": "shipping_city",
+          "entity": "fictional-customer",
+          "id": "new",
+          "source": "synthetic-form-new",
+          "valid_from": "2026-01-02T00:00:00.000000+00:00",
+          "valid_until": null,
+          "value": "Portland"
+        }
+      ],
+      "excluded": []
+    },
+    {
+      "entity": "fictional-customer",
+      "attribute": "shipping_city",
+      "as_of": "2026-01-03T12:00:00.000000+00:00",
+      "status": "supported",
+      "answer": "Portland",
+      "evidence": [
+        {
+          "attribute": "shipping_city",
+          "entity": "fictional-customer",
+          "id": "new",
+          "source": "synthetic-form-new",
+          "valid_from": "2026-01-02T00:00:00.000000+00:00",
+          "valid_until": null,
+          "value": "Portland"
+        }
+      ],
+      "excluded": [
+        {
+          "id": "old",
+          "reasons": [
+            "retracted"
+          ]
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "sequence": 1,
+      "kind": "claim",
+      "recorded_at": "2026-01-01T00:00:00.000000+00:00",
+      "payload": {
+        "attribute": "shipping_city",
+        "entity": "fictional-customer",
+        "id": "old",
+        "source": "synthetic-form-old",
+        "valid_from": "2026-01-01T00:00:00.000000+00:00",
+        "valid_until": null,
+        "value": "Boston"
+      }
+    },
+    {
+      "sequence": 2,
+      "kind": "claim",
+      "recorded_at": "2026-01-02T00:00:00.000000+00:00",
+      "payload": {
+        "attribute": "shipping_city",
+        "entity": "fictional-customer",
+        "id": "new",
+        "source": "synthetic-form-new",
+        "valid_from": "2026-01-02T00:00:00.000000+00:00",
+        "valid_until": null,
+        "value": "Portland"
+      }
+    },
+    {
+      "sequence": 3,
+      "kind": "retract",
+      "recorded_at": "2026-01-03T00:00:00.000000+00:00",
+      "payload": {
+        "id": "old",
+        "reason": "Superseded by verified update"
+      }
+    }
+  ],
+  "limitation": "Structured claims only. Provenance does not prove truth. Retraction hides claims from current answers but retains audit history; it is not physical deletion."
+}

@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-34 tests pass on Windows and Linux with Python 3.11 and 3.13 (GitHub Actions).
+37 tests pass locally on Python 3.13; updated hosted matrix pending.
 
 ## Architecture
 
@@ -112,3 +112,7 @@ Live clients now open existing ledgers only, including at reservation time. A mi
 Use `court.events_page(after_sequence=0, limit=100)` to read up to 1,000 events and receive `next_cursor`. Continue with that cursor; empty pages retain it. Events appended later can appear on subsequent pages, so pagination is not a frozen snapshot. Existing full-history retrieval is unchanged.
 
 See [Reading results](docs/RESULTS.md) for outcome fields, denominators, abstentions and the limits of command success.
+
+## New evaluation path
+
+Call `court.query(..., explain=True)` or set `explain: true` on a JSON query operation. `excluded` lists matching known claim IDs and all applicable reasons: retracted, source_revoked, expired, not_yet_valid. Claims not yet recorded at the query time remain hidden. Answers and evidence remain unchanged. Try `python app.py --input examples/explained-operations.json`.
