@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-41 tests pass on Windows and Linux with Python 3.11 and 3.13 (GitHub Actions).
+44 tests pass locally on Windows with Python 3.13; hosted verification for this update is pending.
 
 ## Architecture
 
@@ -120,3 +120,7 @@ Call `court.query(..., explain=True)` or set `explain: true` on a JSON query ope
 ## Evaluation reliability
 
 Query operations now accept optional `known_at`. `as_of` selects the effective validity time; `known_at` selects which recorded claims, retractions and source revocations are known. Omit it to preserve the original behavior where both times equal `as_of`. Later knowledge can correct an earlier view without rewriting its original answer. A known future-effective claim can also be queried, but that is a view of stored assertions, not a prediction. Run `python app.py --input examples/knowledge-time.json` for a synthetic late-arriving claim: original view unknown, hindsight view Boston, corrected hindsight unknown after retraction.
+
+## Extended evaluation
+
+Run `python comparison.py` (Codex route `comparison`). Four authored query expectations cover a supported fact, conflict, retraction and expiry. Temporal Court matches 4/4; the latest-recorded-value baseline matches 1/4. The baseline respects the knowledge cutoff but deliberately ignores validity, retractions and source revocation. This small specification example is chosen to show those differences and is not a representative accuracy estimate. See `examples/extended-evaluation.json`.

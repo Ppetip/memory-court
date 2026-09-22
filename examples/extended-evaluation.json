@@ -1,0 +1,116 @@
+{
+  "data": "four-author-labeled-synthetic-temporal-queries",
+  "comparisons": [
+    {
+      "policy": "temporal-court",
+      "matched": 4,
+      "queries": 4,
+      "trials": [
+        {
+          "query_index": 0,
+          "expected": {
+            "status": "supported",
+            "answer": "Boston"
+          },
+          "actual": {
+            "status": "supported",
+            "answer": "Boston"
+          },
+          "matched": true
+        },
+        {
+          "query_index": 1,
+          "expected": {
+            "status": "conflict",
+            "answer": null
+          },
+          "actual": {
+            "status": "conflict",
+            "answer": null
+          },
+          "matched": true
+        },
+        {
+          "query_index": 2,
+          "expected": {
+            "status": "supported",
+            "answer": "Boston"
+          },
+          "actual": {
+            "status": "supported",
+            "answer": "Boston"
+          },
+          "matched": true
+        },
+        {
+          "query_index": 3,
+          "expected": {
+            "status": "unknown",
+            "answer": null
+          },
+          "actual": {
+            "status": "unknown",
+            "answer": null
+          },
+          "matched": true
+        }
+      ]
+    },
+    {
+      "policy": "latest-recorded-value",
+      "matched": 1,
+      "queries": 4,
+      "trials": [
+        {
+          "query_index": 0,
+          "expected": {
+            "status": "supported",
+            "answer": "Boston"
+          },
+          "actual": {
+            "status": "supported",
+            "answer": "Boston"
+          },
+          "matched": true
+        },
+        {
+          "query_index": 1,
+          "expected": {
+            "status": "conflict",
+            "answer": null
+          },
+          "actual": {
+            "status": "supported",
+            "answer": "Portland"
+          },
+          "matched": false
+        },
+        {
+          "query_index": 2,
+          "expected": {
+            "status": "supported",
+            "answer": "Boston"
+          },
+          "actual": {
+            "status": "supported",
+            "answer": "Portland"
+          },
+          "matched": false
+        },
+        {
+          "query_index": 3,
+          "expected": {
+            "status": "unknown",
+            "answer": null
+          },
+          "actual": {
+            "status": "supported",
+            "answer": "Portland"
+          },
+          "matched": false
+        }
+      ]
+    }
+  ],
+  "limitation": "Small specification example chosen to exercise conflict, retraction and expiry. Baseline uses the latest recorded claim known at the query cutoff and ignores validity and withdrawals. Not a representative accuracy estimate or proof of source truth."
+}
