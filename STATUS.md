@@ -1,9 +1,9 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 44 offline tests pass; dry run and live synthetic Jev workflow pass.
+Verified: 47 offline tests pass locally; hosted verification pending. Previous Jev smoke checks remain historical.
 
-Latest: Run `python comparison.py` (Codex route `comparison`).
+Latest: A run of operations now shares one SQLite write transaction.
 
 Next: Expand independently reviewed temporal scenarios, including source revocation and late-arriving evidence.
 
@@ -38,3 +38,5 @@ Reliability verification: https://github.com/Ppetip/memory-court/actions/runs/35
 2026-09-22 22:50 UTC: Run `python comparison.py` (Codex route `comparison`). Four authored query expectations cover a supported fact, conflict, retraction and expiry. Temporal Court matches 4/4; the latest-recorded-value baseline matches 1/4. The baseline respects the knowledge cutoff but deliberately ignores validity, retractions and source revocation. This small specification example is chosen to show those differences and is not a representative accuracy estimate. See `examples/extended-evaluation.json`. Common-runner checks pass. Published and verified: all four hosted Windows/Linux Python 3.11/3.13 jobs pass. No new Jev calls.
 
 Extended evaluation verification: https://github.com/Ppetip/memory-court/actions/runs/35795070942
+
+2026-09-23 06:53 UTC: A run of operations now shares one SQLite write transaction. If any later operation fails, all earlier writes from that batch roll back; existing events remain intact. Queries within a successful batch see its pending claims, and the whole batch commits on success. Direct claim/retract calls still own individual transactions. Database/schema creation can occur before batch validation; rollback covers event writes, not file creation. A successful batch replayed again is not silently deduplicated: existing claim IDs still reject duplicates. Checks pass; run ID 3a10bc0eebe149bfa6d5f7d629a944bd. No live calls. Hosted verification pending.

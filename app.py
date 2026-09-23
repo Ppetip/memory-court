@@ -2,6 +2,7 @@
 import argparse
 import json
 import sqlite3
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -39,11 +40,25 @@ class Court:
         events = [{"sequence": seq, "kind": kind, "recorded_at": at, "payload": json.loads(p)} for seq, kind, at, p in rows]
         return {"events": events, "next_cursor": events[-1]["sequence"] if events else after_sequence}
 
+    @contextmanager
+    def _write(self):
+        """Own one write transaction; nested appends participate without commits."""
+        owner = not self.db.in_transaction
+        if owner:
+            self.db.execute("BEGIN IMMEDIATE")
+        try:
+            yield
+            if owner:
+                self.db.commit()
+        except BaseException:
+            if owner:
+                self.db.rollback()
+            raise
+
     def _append(self, kind, recorded_at, payload):
         at = stamp(recorded_at)
         # Serialize validation and insertion across writers to the same database.
-        with self.db:
-            self.db.execute("BEGIN IMMEDIATE")
+        with self._write():
             events = self.events()
             if events and at < events[-1]["recorded_at"]:
                 raise ValueError("recorded timestamps must be nondecreasing")
@@ -123,19 +138,20 @@ class Court:
 def run(operations, path=":memory:"):
     court, results = Court(path), []
     try:
-        for op in operations:
-            item = dict(op)
-            kind = item.pop("operation")
-            if kind == "claim":
-                court.claim(**item)
-            elif kind == "retract":
-                court.retract(**item)
-            elif kind == "revoke_source":
-                court.revoke_source(**item)
-            elif kind == "query":
-                results.append(court.query(**item))
-            else:
-                raise ValueError("unknown operation")
+        with court._write():
+            for op in operations:
+                item = dict(op)
+                kind = item.pop("operation")
+                if kind == "claim":
+                    court.claim(**item)
+                elif kind == "retract":
+                    court.retract(**item)
+                elif kind == "revoke_source":
+                    court.revoke_source(**item)
+                elif kind == "query":
+                    results.append(court.query(**item))
+                else:
+                    raise ValueError("unknown operation")
         return {"queries": results, "events": court.events(),
                 "limitation": "Structured claims only. Provenance does not prove truth. Retraction hides claims from current answers but retains audit history; it is not physical deletion."}
     finally:

@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-44 tests pass on Windows and Linux with Python 3.11 and 3.13 (GitHub Actions).
+47 tests pass locally; hosted verification for this input-boundary update is pending.
 
 ## Architecture
 
@@ -124,3 +124,7 @@ Query operations now accept optional `known_at`. `as_of` selects the effective v
 ## Extended evaluation
 
 Run `python comparison.py` (Codex route `comparison`). Four authored query expectations cover a supported fact, conflict, retraction and expiry. Temporal Court matches 4/4; the latest-recorded-value baseline matches 1/4. The baseline respects the knowledge cutoff but deliberately ignores validity, retractions and source revocation. This small specification example is chosen to show those differences and is not a representative accuracy estimate. See `examples/extended-evaluation.json`.
+
+## Input boundaries
+
+A run of operations now shares one SQLite write transaction. If any later operation fails, all earlier writes from that batch roll back; existing events remain intact. Queries within a successful batch see its pending claims, and the whole batch commits on success. Direct claim/retract calls still own individual transactions. Database/schema creation can occur before batch validation; rollback covers event writes, not file creation. A successful batch replayed again is not silently deduplicated: existing claim IDs still reject duplicates.
