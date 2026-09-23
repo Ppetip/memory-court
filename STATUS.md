@@ -1,7 +1,7 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 47 offline tests pass locally; hosted verification pending. Previous Jev smoke checks remain historical.
+Verified: 47 offline tests and all four hosted matrix jobs pass. Jev smoke results remain historical; no new live calls.
 
 Latest: A run of operations now shares one SQLite write transaction.
 
@@ -39,4 +39,6 @@ Reliability verification: https://github.com/Ppetip/memory-court/actions/runs/35
 
 Extended evaluation verification: https://github.com/Ppetip/memory-court/actions/runs/35795070942
 
-2026-09-23 06:53 UTC: A run of operations now shares one SQLite write transaction. If any later operation fails, all earlier writes from that batch roll back; existing events remain intact. Queries within a successful batch see its pending claims, and the whole batch commits on success. Direct claim/retract calls still own individual transactions. Database/schema creation can occur before batch validation; rollback covers event writes, not file creation. A successful batch replayed again is not silently deduplicated: existing claim IDs still reject duplicates. Checks pass; run ID 3a10bc0eebe149bfa6d5f7d629a944bd. No live calls. Hosted verification pending.
+2026-09-23 06:53 UTC: A run of operations now shares one SQLite write transaction. If any later operation fails, all earlier writes from that batch roll back; existing events remain intact. Queries within a successful batch see its pending claims, and the whole batch commits on success. Direct claim/retract calls still own individual transactions. Database/schema creation can occur before batch validation; rollback covers event writes, not file creation. A successful batch replayed again is not silently deduplicated: existing claim IDs still reject duplicates. Checks pass; run ID 3a10bc0eebe149bfa6d5f7d629a944bd. No live calls. Hosted verification passed on all four OS/Python combinations.
+
+2026-09-23 10:54 UTC verification follow-up: Published code and all four hosted jobs verified after the earlier approval-review usage-limit interruption. Existing check suites were not rerun solely to create history. Run: https://github.com/Ppetip/memory-court/actions/runs/35829397926
