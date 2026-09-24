@@ -1,7 +1,7 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 52 tests and five offline CLI paths pass locally; hosted checks for this change pending. Jev smoke results remain historical; no new live calls.
+Verified: 52 tests and five offline CLI paths pass locally; all four hosted checks pass. Jev smoke results remain historical; no new live calls.
 
 Latest: Explained exclusions link to visible retraction and source-revocation events.
 
@@ -45,4 +45,6 @@ Extended evaluation verification: https://github.com/Ppetip/memory-court/actions
 
 2026-09-23 14:55 UTC: Added guidance for interpreting saved-check freshness in the optional local Codex runner. A current check validates temporal rules and transaction regressions. It does not query or certify the contents of a persistent user database. The shared runner now records check-source fingerprints and provides read-only status. All five current app checks passed (234 tests total), along with 24 local runner regressions. Run ID: 811900b822db42e390b5e1714afbbe25. App implementation unchanged; this documentation update skips redundant hosted CI. No live calls or new performance claim.
 
-2026-09-24 15:00 UTC: Explained exclusions now include ordered audit-event references and reasons, limited by claim/source and knowledge cutoff. Answers and stored events remain unchanged. Local check a95d89877d0f4655bdb2ebd5593690d7 passed. Hosted verification pending. No user databases or live providers accessed.
+2026-09-24 15:00 UTC: Explained exclusions now include ordered audit-event references and reasons, limited by claim/source and knowledge cutoff. Answers and stored events remain unchanged. Local check a95d89877d0f4655bdb2ebd5593690d7 passed. All four hosted Windows/Linux Python 3.11/3.13 jobs pass. No user databases or live providers accessed.
+
+Exclusion-evidence verification: https://github.com/Ppetip/memory-court/actions/runs/36017422071
