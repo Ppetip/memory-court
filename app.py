@@ -101,6 +101,7 @@ class Court:
         at = stamp(as_of)
         knowledge = stamp(known_at) if known_at is not None else at
         claims, retracted, revoked_sources = {}, set(), set()
+        retraction_events, revocation_events = {}, {}
         for event in self.events():
             if event["recorded_at"] > knowledge:
                 continue
@@ -109,8 +110,12 @@ class Court:
                 claims[p["id"]] = p
             elif event["kind"] == "retract":
                 retracted.add(p["id"])
+                if explain:
+                    retraction_events.setdefault(p["id"], []).append(event)
             elif event["kind"] == "revoke_source":
                 revoked_sources.add(p["source"])
+                if explain:
+                    revocation_events.setdefault(p["source"], []).append(event)
         active = [p for id, p in claims.items() if id not in retracted and p["source"] not in revoked_sources and p["entity"] == entity
                   and p["attribute"] == attribute and p["valid_from"] <= at
                   and (p["valid_until"] is None or at < p["valid_until"])]
@@ -130,7 +135,15 @@ class Court:
                 if p["source"] in revoked_sources: reasons.append("source_revoked")
                 if p["valid_from"] > at: reasons.append("not_yet_valid")
                 if p["valid_until"] is not None and at >= p["valid_until"]: reasons.append("expired")
-                if reasons: excluded.append({"id":id,"reasons":reasons})
+                if reasons:
+                    item = {"id": id, "reasons": reasons}
+                    events = retraction_events.get(id, []) + revocation_events.get(p["source"], [])
+                    if events:
+                        item["event_evidence"] = [
+                            {"sequence": e["sequence"], "kind": e["kind"],
+                             "recorded_at": e["recorded_at"], "reason": e["payload"]["reason"]}
+                            for e in sorted(events, key=lambda e: e["sequence"])]
+                    excluded.append(item)
             result["excluded"] = excluded
         return result
 

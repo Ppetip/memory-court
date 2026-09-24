@@ -22,7 +22,9 @@ class KnowledgeTimeTests(unittest.TestCase):
         self.assertEqual(self.c.query('fictional','city',T2,known_at=T2)['answer'],'Boston')
         result=self.c.query('fictional','city',T2,True,known_at=T3)
         self.assertEqual(result['status'],'unknown')
-        self.assertEqual(result['excluded'],[{'id':'late','reasons':['retracted']}])
+        self.assertEqual(len(result['excluded']),1)
+        self.assertEqual(result['excluded'][0]['id'],'late')
+        self.assertEqual(result['excluded'][0]['reasons'],['retracted'])
 
     def test_validity_uses_effective_time_not_knowledge_time(self):
         self.assertEqual(self.c.query('fictional','city',T3,known_at=T2)['status'],'unknown')
