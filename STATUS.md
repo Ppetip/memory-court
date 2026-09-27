@@ -48,3 +48,5 @@ Extended evaluation verification: https://github.com/Ppetip/memory-court/actions
 2026-09-24 15:00 UTC: Explained exclusions now include ordered audit-event references and reasons, limited by claim/source and knowledge cutoff. Answers and stored events remain unchanged. Local check a95d89877d0f4655bdb2ebd5593690d7 passed. All four hosted Windows/Linux Python 3.11/3.13 jobs pass. No user databases or live providers accessed.
 
 Exclusion-evidence verification: https://github.com/Ppetip/memory-court/actions/runs/36017422071
+
+2026-09-27 07:00 UTC: Shared-runner routing changes passed the existing temporal, explanation and transaction checks; this app implementation and stored user data are unchanged. All five common-runner check routes passed (280 app tests and 28 CLI paths total), plus 32 shared-runner regressions. Check run ffd76d632c9246f4969e0cbbbacb538f. Shared integration is local to the AI Lab workspace, not included in a standalone repository clone. Existing app-source hosted results remain applicable; this documentation update skips redundant hosted CI. No paid calls.
