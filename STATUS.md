@@ -1,7 +1,7 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 58 tests and six offline CLI paths pass locally; all four hosted checks pass. Jev smoke results remain historical; no new live calls.
+Verified: 60 tests and six offline CLI paths pass locally; hosted checks for this change pending. Jev smoke results remain historical; no new live calls.
 
 Latest: Fixed-boundary history pages remain stable while later audit events are appended.
 
@@ -56,3 +56,5 @@ Exclusion-evidence verification: https://github.com/Ppetip/memory-court/actions/
 2026-09-28 07:00 UTC: Added events_snapshot and opt-in history batch operations with sequence watermark, bounded pages and has_more. Existing live pages and full final batch history remain available. Six regressions cover append isolation, equal-time ordering, empty/exhausted pages, validation, detached read-only output, pending writes and rollback. Local check 8f183d219b71471d84de67a55dc10983 passed. All four hosted Windows/Linux Python 3.11/3.13 jobs pass. Synthetic code evidence only; no user database or provider access.
 
 Snapshot-history verification: https://github.com/Ppetip/memory-court/actions/runs/36389788676
+
+2026-09-28 15:00 UTC: Official TypeSafe model pricing rechecked; the pinned Jev rate and free output are unchanged. Review window refreshed to September 28 through October 4 UTC, failing closed October 5. One-cent permanent reservation and the existing shared $3 cap/ledger remain unchanged. Added two mocked date-boundary tests; existing mocked calls now use the review-start date. Local check 10d3bcc5c43a42b1b5bbf4b998834a5e passed. Hosted verification pending. No live calls or ledger access during this update; historical smoke results remain historical.
