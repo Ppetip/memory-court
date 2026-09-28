@@ -1,0 +1,38 @@
+[
+  {
+    "operation": "claim",
+    "id": "first",
+    "entity": "fictional-customer",
+    "attribute": "city",
+    "value": "Boston",
+    "source": "synthetic-form",
+    "recorded_at": "2026-01-01T00:00:00Z",
+    "valid_from": "2026-01-01T00:00:00Z"
+  },
+  {
+    "operation": "claim",
+    "id": "second",
+    "entity": "fictional-customer",
+    "attribute": "city",
+    "value": "Boston",
+    "source": "synthetic-form",
+    "recorded_at": "2026-01-01T00:00:00Z",
+    "valid_from": "2026-01-01T00:00:00Z"
+  },
+  {
+    "operation": "history",
+    "limit": 1
+  },
+  {
+    "operation": "retract",
+    "id": "first",
+    "recorded_at": "2026-01-01T00:00:00Z",
+    "reason": "Synthetic correction"
+  },
+  {
+    "operation": "history",
+    "after_sequence": 1,
+    "through_sequence": 2,
+    "limit": 1
+  }
+]

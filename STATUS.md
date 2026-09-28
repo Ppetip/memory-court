@@ -1,9 +1,9 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 52 tests and five offline CLI paths pass locally; all four hosted checks pass. Jev smoke results remain historical; no new live calls.
+Verified: 58 tests and six offline CLI paths pass locally; hosted checks for this change pending. Jev smoke results remain historical; no new live calls.
 
-Latest: Explained exclusions link to visible retraction and source-revocation events.
+Latest: Fixed-boundary history pages remain stable while later audit events are appended.
 
 Next: Expand independently reviewed temporal scenarios, including source revocation and late-arriving evidence.
 
@@ -52,3 +52,5 @@ Exclusion-evidence verification: https://github.com/Ppetip/memory-court/actions/
 2026-09-27 07:00 UTC: Shared-runner routing changes passed the existing temporal, explanation and transaction checks; this app implementation and stored user data are unchanged. All five common-runner check routes passed (280 app tests and 28 CLI paths total), plus 32 shared-runner regressions. Check run ffd76d632c9246f4969e0cbbbacb538f. Shared integration is local to the AI Lab workspace, not included in a standalone repository clone. Existing app-source hosted results remain applicable; this documentation update skips redundant hosted CI. No paid calls.
 
 2026-09-27 19:00 UTC: The shared-runner change passes existing temporal, audit and transaction checks; no persistent user database was accessed. All five common checks pass (288 app tests, 29 CLI paths), plus 38 shared-runner regressions. Check run 6cbc7ab369f64438ac08e746849d49a7. Shared integration stays local to the AI Lab workspace. App-source hosted evidence is unchanged; documentation-only update skips redundant CI. No live calls.
+
+2026-09-28 07:00 UTC: Added events_snapshot and opt-in history batch operations with sequence watermark, bounded pages and has_more. Existing live pages and full final batch history remain available. Six regressions cover append isolation, equal-time ordering, empty/exhausted pages, validation, detached read-only output, pending writes and rollback. Local check 8f183d219b71471d84de67a55dc10983 passed. Hosted verification pending. Synthetic code evidence only; no user database or provider access.

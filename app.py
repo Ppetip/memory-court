@@ -40,6 +40,24 @@ class Court:
         events = [{"sequence": seq, "kind": kind, "recorded_at": at, "payload": json.loads(p)} for seq, kind, at, p in rows]
         return {"events": events, "next_cursor": events[-1]["sequence"] if events else after_sequence}
 
+    def events_snapshot(self, after_sequence=0, limit=100, through_sequence=None):
+        """Read immutable event pages through a fixed sequence watermark."""
+        if type(after_sequence) is not int or after_sequence < 0 or type(limit) is not int or not 1 <= limit <= 1000:
+            raise ValueError("nonnegative cursor and limit between 1 and 1000 required")
+        if through_sequence is not None and (type(through_sequence) is not int or through_sequence < 0):
+            raise ValueError("through_sequence must be a nonnegative integer")
+        latest = self.db.execute("SELECT COALESCE(MAX(seq),0) FROM events").fetchone()[0]
+        through = latest if through_sequence is None else through_sequence
+        if after_sequence > through or through > latest:
+            raise ValueError("cursor must not exceed snapshot boundary; boundary must not exceed existing history")
+        rows = list(self.db.execute(
+            "SELECT seq,kind,recorded_at,payload FROM events WHERE seq > ? AND seq <= ? ORDER BY seq LIMIT ?",
+            (after_sequence, through, limit + 1)))
+        events = [{"sequence": seq, "kind": kind, "recorded_at": at, "payload": json.loads(p)}
+                  for seq, kind, at, p in rows[:limit]]
+        return {"events": events, "next_cursor": events[-1]["sequence"] if events else after_sequence,
+                "through_sequence": through, "has_more": len(rows) > limit}
+
     @contextmanager
     def _write(self):
         """Own one write transaction; nested appends participate without commits."""
@@ -149,7 +167,7 @@ class Court:
 
 
 def run(operations, path=":memory:"):
-    court, results = Court(path), []
+    court, results, history_pages = Court(path), [], []
     try:
         with court._write():
             for op in operations:
@@ -161,11 +179,14 @@ def run(operations, path=":memory:"):
                     court.retract(**item)
                 elif kind == "revoke_source":
                     court.revoke_source(**item)
+                elif kind == "history":
+                    history_pages.append(court.events_snapshot(**item))
                 elif kind == "query":
                     results.append(court.query(**item))
                 else:
                     raise ValueError("unknown operation")
         return {"queries": results, "events": court.events(),
+                **({"history_pages": history_pages} if history_pages else {}),
                 "limitation": "Structured claims only. Provenance does not prove truth. Retraction hides claims from current answers but retains audit history; it is not physical deletion."}
     finally:
         court.close()
@@ -184,7 +205,7 @@ def demo():
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--input", type=Path, help="JSON array of claim/retract/query operations")
+    p.add_argument("--input", type=Path, help="JSON array of claim/retract/revoke_source/query/history operations")
     p.add_argument("--db", default=":memory:")
     a = p.parse_args()
     print(json.dumps(run(json.loads(a.input.read_text(encoding="utf-8")) if a.input else demo(), a.db), indent=2))

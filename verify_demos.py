@@ -13,6 +13,7 @@ COMMANDS.append(['app.py', '--input', 'examples/explained-operations.json'])
 COMMANDS.append(['app.py', '--input', 'examples/knowledge-time.json'])
 
 COMMANDS.append(['comparison.py'])
+COMMANDS.append(['app.py', '--input', 'examples/snapshot-history.json'])
 
 def main():
     for args in COMMANDS:
