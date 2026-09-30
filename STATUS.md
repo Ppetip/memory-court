@@ -62,3 +62,5 @@ Snapshot-history verification: https://github.com/Ppetip/memory-court/actions/ru
 Pricing-review verification: https://github.com/Ppetip/memory-court/actions/runs/36441162860
 
 2026-09-29 23:00 UTC: Shared-runner routing changes pass temporal, audit and snapshot checks; no user database was accessed. All five common checks pass (312 app tests, 31 CLI paths), plus 44 shared-runner regressions. Check run 5e891ea4ba6c48658f9dcb20c00c1d26. Shared integration stays local to the AI Lab workspace; app-source hosted evidence is unchanged. Documentation-only update skips redundant CI. No live calls.
+
+2026-09-30 23:03 UTC: Shared local runner now offers Budget Cortex random-baseline with fixed seed 7, budget 22 and target 0.7; full comparisons and input origin appear in private reports. All five required common checks pass (326 app tests, 33 CLI paths), plus 50 shared-runner regressions. Check run 79735bdda73e449d86dd8b4d521efcb2. App implementation unchanged; prior exact-source hosted evidence retained and this documentation update skips redundant CI. Shared runner is local AI Lab integration, not bundled in standalone repositories. No live calls or ledger changes.
