@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-65 tests and six offline CLI paths pass locally; hosted verification for batch preflight is pending.
+65 tests and six offline CLI paths pass on Windows and Linux with Python 3.11 and 3.13 (GitHub Actions).
 
 ## Architecture
 
