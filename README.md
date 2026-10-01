@@ -25,7 +25,7 @@ For commands using a file under `runs/`, create that directory first (`mkdir run
 python -m unittest discover -s tests -v
 ```
 
-60 tests and six offline CLI paths pass on Windows and Linux with Python 3.11 and 3.13 (GitHub Actions).
+65 tests and six offline CLI paths pass locally; hosted verification for batch preflight is pending.
 
 ## Architecture
 
@@ -127,7 +127,7 @@ Run `python comparison.py` (Codex route `comparison`). Four authored query expec
 
 ## Input boundaries
 
-A run of operations now shares one SQLite write transaction. If any later operation fails, all earlier writes from that batch roll back; existing events remain intact. Queries within a successful batch see its pending claims, and the whole batch commits on success. Direct claim/retract calls still own individual transactions. Database/schema creation can occur before batch validation; rollback covers event writes, not file creation. A successful batch replayed again is not silently deduplicated: existing claim IDs still reject duplicates.
+A run of operations now shares one SQLite write transaction. If any later operation fails, all earlier writes from that batch roll back; existing events remain intact. Queries within a successful batch see its pending claims, and the whole batch commits on success. Direct claim/retract calls still own individual transactions. Database/schema creation occurs after batch-shape validation but can precede operation-argument validation; rollback covers event writes, not file creation. A successful batch replayed again is not silently deduplicated: existing claim IDs still reject duplicates.
 
 ## Trace an exclusion to its recorded event
 
@@ -143,6 +143,22 @@ Call `court.events_snapshot(limit=100)` to capture a `through_sequence` boundary
 
 The API reads claims, retractions and source revocations in sequence order, including equal-timestamp events. Later appends cannot enter a continued snapshot. Reading pages makes no event writes; returned payloads are detached from storage. The boundary is a sequence watermark for this database, not a signed token, timestamp query, authorization check or separate database backup. Use the same append-only store throughout. Existing events_page remains a live view.
 
-JSON operation batches may include `{"operation":"history","limit":100}` and subsequent history requests with explicit `after_sequence`/`through_sequence`. Results appear in `history_pages` only when requested. A request sees earlier writes in that batch; an invalid later request rolls back all batch event writes as before. The batch's top-level `events` still contains its full final history and can include events beyond an individual page's boundary. Snapshot paging does not redact or restrict access to that history. Database/schema creation and the existing transaction behavior of run are unchanged.
+JSON operation batches may include `{"operation":"history","limit":100}` and subsequent history requests with explicit `after_sequence`/`through_sequence`. Results appear in `history_pages` only when requested. A request sees earlier writes in that batch; an invalid later request rolls back all batch event writes as before. The batch's top-level `events` still contains its full final history and can include events beyond an individual page's boundary. Snapshot paging does not redact or restrict access to that history. Snapshot pagination uses the normal batch transaction described above.
 
 Try `python app.py --input examples/snapshot-history.json`. This synthetic example reads two claims across pages while a retraction is appended between them; the retraction remains in the final audit history but outside the fixed pages. Keep reports containing authorized private data local. These checks establish pagination behavior, not the truth of stored claims.
+
+## Validate batch structure before opening SQLite
+
+`run(operations, path)` requires a list of operation objects. Each object must name
+one of `claim`, `retract`, `revoke_source`, `history` or `query` in its `operation`
+field. Non-array inputs, non-object entries and missing/unsupported names raise
+`ValueError` before a database is opened or created, even if an invalid entry is
+last in the batch. An empty object previously looked like an empty batch and could
+create a database; use an explicit empty array when you intend an empty batch.
+
+Operation arguments are still checked during the shared transaction. Their failure
+rolls back all new event writes, while existing events remain intact; a new database
+file/schema can still exist after an argument failure. Valid empty arrays retain
+the existing behavior, including opening the requested database and returning its
+history. This structural check does not redact history, change permissions or
+establish the truth of stored claims. No provider calls or migrations are added.

@@ -167,6 +167,13 @@ class Court:
 
 
 def run(operations, path=":memory:"):
+    if not isinstance(operations, list):
+        raise ValueError("operations must be an array")
+    supported = {"claim", "retract", "revoke_source", "history", "query"}
+    for op in operations:
+        if (not isinstance(op, dict) or not isinstance(op.get("operation"), str)
+                or op["operation"] not in supported):
+            raise ValueError("each operation must be an object with a supported operation name")
     court, results, history_pages = Court(path), [], []
     try:
         with court._write():

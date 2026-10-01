@@ -1,9 +1,9 @@
 # Status
 
 Stage: command-line prototype with optional live Jev integration.
-Verified: 60 tests and six offline CLI paths pass locally; all four hosted checks pass. Jev smoke results remain historical; no new live calls.
+Verified: 65 tests and six offline CLI paths pass locally; hosted checks for this change pending. Jev smoke results remain historical; no new live calls.
 
-Latest: Fixed-boundary history pages remain stable while later audit events are appended.
+Latest: Batch structure is validated before SQLite opens, avoiding database creation for malformed requests.
 
 Next: Expand independently reviewed temporal scenarios, including source revocation and late-arriving evidence.
 
@@ -64,3 +64,5 @@ Pricing-review verification: https://github.com/Ppetip/memory-court/actions/runs
 2026-09-29 23:00 UTC: Shared-runner routing changes pass temporal, audit and snapshot checks; no user database was accessed. All five common checks pass (312 app tests, 31 CLI paths), plus 44 shared-runner regressions. Check run 5e891ea4ba6c48658f9dcb20c00c1d26. Shared integration stays local to the AI Lab workspace; app-source hosted evidence is unchanged. Documentation-only update skips redundant CI. No live calls.
 
 2026-09-30 23:03 UTC: Shared local runner now offers Budget Cortex random-baseline with fixed seed 7, budget 22 and target 0.7; full comparisons and input origin appear in private reports. All five required common checks pass (326 app tests, 33 CLI paths), plus 50 shared-runner regressions. Check run 79735bdda73e449d86dd8b4d521efcb2. App implementation unchanged; prior exact-source hosted evidence retained and this documentation update skips redundant CI. Shared runner is local AI Lab integration, not bundled in standalone repositories. No live calls or ledger changes.
+
+2026-10-01 03:05 UTC: Reproduced run({}) accepting a malformed empty object and creating a new database. Now validate the operation array, object entries and supported operation names before constructing Court. Invalid late entries also stop before database access. Argument validation remains transactional; failures roll back new events, and valid empty arrays preserve their documented database-open/history behavior. Five new tests cover no database open on malformed collections or late entries, no new file/history change, valid batch/empty-array behavior and rollback on an argument failure. Common check c3b508e0c57f4e5a9acb36617fe6dfa6 passes 65 tests and six CLI paths. Hosted verification pending. Temporary synthetic stores only; no private databases, paid calls or Jev ledger changes.
